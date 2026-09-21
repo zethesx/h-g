@@ -8,9 +8,7 @@ dist/
 .dev.vars.*
 
 .vibecoding/
-/scripts/
 /public/media/hero-property-03.webp
-.wrangler/
 playwright-report/
 test-results/
 coverage/

@@ -2,34 +2,45 @@
 
 Responsive German landing page for a local property, garden and maintenance service in Lauenburg/Elbe.
 
-## Local development
+## Install
 
 ```sh
-npm ci
-npm run dev
+npm install
 ```
 
-The local development server uses the site root. The production build uses the public preview base path `/preview/h-g/`.
+## Development
+
+```sh
+npm run dev
+```
 
 ## Production build
 
 ```sh
 npm run build
+```
+
+## Preview
+
+```sh
 npm run preview
 ```
 
-The deployable output is written to `dist/`.
+The production-ready static output is written to `dist/`.
 
-## Deployment
+## Base path
 
-The static build is deployed to the Cloudflare Pages project `zade-preview-h-g`. A path-scoped Worker named `zade-preview-h-g-router` proxies only `www.zade-studios.com/preview/h-g*` to that origin.
+The default build targets the domain root (`/`). For a subpath deployment, set `VITE_BASE_PATH` before building:
 
 ```sh
-npm run deploy:origin
-npm run deploy:router
+VITE_BASE_PATH=/example/path/ npm run build
 ```
 
-The preview is intentionally unlisted. HTML metadata and response headers prevent search indexing.
+On PowerShell:
+
+```powershell
+$env:VITE_BASE_PATH='/example/path/'; npm run build
+```
 
 ## Contact form
 

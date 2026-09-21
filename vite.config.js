@@ -1,5 +1,16 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 
-export default defineConfig(({ command, isPreview }) => ({
-  base: command === 'build' || isPreview ? '/preview/h-g/' : '/',
-}));
+function normalizeBase(value = '/') {
+  if (value === './') return './';
+
+  const withLeadingSlash = value.startsWith('/') ? value : `/${value}`;
+  return withLeadingSlash.endsWith('/') ? withLeadingSlash : `${withLeadingSlash}/`;
+}
+
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+
+  return {
+    base: normalizeBase(env.VITE_BASE_PATH || '/'),
+  };
+});

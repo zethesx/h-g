@@ -1,0 +1,78 @@
+﻿/* Color roles only. Geometry, imagery and motion belong to their existing modules.
+   Base: deep moss / quiet moss / warm stone / cream.
+   Brand: rich olive, with a light counterpart for dark photography.
+   Accent: bounded controls, focus and progress; never a section-sized fill. */
+:root{
+  --green-accent:var(--olive-accent);
+  --line-subtle:color-mix(in srgb,var(--olive-brand) 24%,transparent);
+  --line-strong:color-mix(in srgb,var(--olive-brand) 48%,transparent);
+  --line-on-dark:color-mix(in srgb,var(--olive-tint) 28%,transparent);
+  --contact-surface:color-mix(in srgb,var(--cream) 84%,var(--olive-brand));
+}
+::selection{background:var(--olive-tint);color:var(--moss-deep)}
+/* Neutral editorial sections retain their cream canvas. */
+.intro .section-label,.intro-note,.services .section-heading .eyebrow,.about-copy>.eyebrow,.about-photo>span,.process-heading>.eyebrow{color:var(--olive-brand)}
+.section-heading,.process-heading,.about-signoff,.reel-controls{border-color:var(--line-subtle)}
+.about-signoff>span:last-child{color:var(--olive-brand)}
+/* Selection is the only filled item in the service index. */
+.service-row{border-color:var(--line-subtle)}
+.service-row:hover{background:var(--stone-warm);color:var(--olive-brand)}
+.service-row.is-active{background:var(--olive-brand);color:var(--cream)}
+.service-row.is-active>span{color:var(--cream)}
+.service-row.is-active b{color:var(--olive-on-dark)}
+.service-copy .eyebrow,.image-annotation{color:var(--olive-brand)}
+.service-counter{background:color-mix(in srgb,var(--moss-deep) 88%,transparent);color:var(--olive-tint)}
+.service-image-wrap{background:var(--moss-surface)}
+.text-button{border-color:var(--line-strong)}
+.text-button:hover,.text-button:focus-visible{color:var(--green-accent);border-color:var(--green-accent)}
+.reel-controls button{border-color:var(--line-strong);color:var(--olive-brand)}
+.reel-controls button:hover{background:var(--olive-brand);color:var(--cream)}
+/* Material scene: dark base, light olive annotations and an accent progress line. */
+.story-heading>.eyebrow,.story-heading h2 span{color:var(--olive-on-dark)}
+.story-heading>p:last-child,.story-foot{color:var(--olive-tint)}
+.material-marker{background:var(--cream);color:var(--olive-brand)}
+.story-progress{background:var(--line-on-dark)}
+.story-progress i{background:var(--olive-on-dark)}
+/* Story index stays subdued until current. */
+.process-choice{color:var(--text-muted)}
+.process-choice.is-current{color:var(--olive-brand)}
+.process-choice.is-current>span,#process-position{color:var(--green-accent)}
+.process-choice i{background:var(--line-subtle)}
+.process-choice b{background:var(--green-accent)}
+.process-choice.is-complete b{background:var(--olive-line)}
+.process-frame-number,.process-frame-copy .eyebrow{color:var(--olive-on-dark)}
+.process-frame-note{color:var(--olive-tint)}
+.process-controls button{color:var(--olive-brand);border-color:var(--line-strong)}
+.process-controls button:hover{background:var(--olive-brand);color:var(--cream)}
+.process-controls #process-play{background:var(--olive-brand);color:var(--cream)}
+.process-controls #process-play:hover{background:var(--green-accent)}
+.process-mode{color:var(--text-muted)}
+/* Contact surface stays muted; saturated greens remain inside controls. */
+.contact{background:var(--contact-surface)}
+.contact .eyebrow,.contact-top>span,.contact-details a{color:var(--olive-brand)}
+.contact-details{border-color:var(--line-strong)}
+.contact-details a:hover{color:var(--green-accent)}
+.contact-disc{background:var(--olive-brand)}
+.contact-disc:hover{background:var(--green-accent)}
+#contact-dialog{background:var(--cream);border-color:var(--line-subtle)}
+#contact-dialog .eyebrow,#contact-dialog form label,#contact-dialog .dialog-phones a{color:var(--olive-brand)}
+#contact-dialog .dialog-phones{border-color:var(--line-subtle)}
+#contact-dialog select:has(option:checked:not([value=""])){color:var(--olive-brand);border-bottom-color:var(--green-accent)}
+#contact-dialog .button-dark{background:var(--olive-brand)}
+#contact-dialog .button-dark:before{background:var(--green-accent)}
+#contact-dialog .button-dark>span{background:var(--olive-tint);color:var(--moss-deep)}
+#contact-dialog .button-dark:not(:disabled):hover>span{background:var(--olive-on-dark)}
+/* Existing island geometry and ticket hover behavior are unchanged. */
+.site-header.is-island{background:color-mix(in srgb,var(--cream) 96%,transparent);border-color:var(--line-subtle)}
+.site-header.is-island nav a:hover,.site-header.is-island nav a:focus-visible,.site-header.is-island nav a:active{color:var(--olive-brand)}
+.site-header.is-island nav a:after{background:var(--green-accent)}
+/* Final material composition: the same dark base and olive highlights as the opening. */
+.footer{background:var(--moss-deep)}
+.footer-ground{background:var(--moss-surface)}
+.footer-ground:after{background:color-mix(in srgb,var(--moss-deep) 44%,transparent)}
+.footer-ground>p span,.footer .wordmark i{color:var(--olive-on-dark)}
+.footer-info{border-color:var(--line-on-dark)}
+.footer-info nav a:hover,.footer-info>a:last-child:hover{color:var(--olive-on-dark)}
+.footer-bottom{color:var(--olive-tint)}
+.footer-bottom a{color:var(--cream);border-color:var(--olive-on-dark)}
+.footer-bottom a:hover{color:var(--olive-on-dark)}

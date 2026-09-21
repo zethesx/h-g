@@ -1,0 +1,14 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "zade-preview-h-g-router",
+  "main": "worker.js",
+  "compatibility_date": "2026-09-21",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    {
+      "pattern": "www.zade-studios.com/preview/h-g*",
+      "zone_name": "zade-studios.com"
+    }
+  ]
+}

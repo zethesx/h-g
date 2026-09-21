@@ -1,0 +1,42 @@
+﻿/* Desktop contact landscape: shared left edge, inset briefing surface, material handoff. */
+.contact.contact-stage{position:relative;isolation:isolate;overflow:clip;padding:78px var(--inset) 0;background:var(--moss-deep);color:var(--cream)}
+.contact-landscape{position:absolute;inset:0;z-index:-1;overflow:hidden}
+.contact-landscape img{width:100%;height:100%;object-fit:cover;object-position:50% 70%;opacity:.48}
+.contact-landscape:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,var(--moss-deep) 2%,transparent 85%),linear-gradient(90deg,#263529c9,transparent 80%)}
+.contact-stage-content{max-width:1720px;margin:auto}
+.contact-stage .eyebrow{color:var(--olive-tint)}
+.contact-stage-heading h2{font-size:clamp(76px,7.1vw,126px);line-height:.96;margin:25px 0 0;letter-spacing:-.025em}
+.contact-stage-heading h2 span{color:var(--olive-on-dark)}
+.contact-stage-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(480px,.9fr);column-gap:clamp(70px,8vw,170px);align-items:start;margin-top:-38px}
+.contact-stage-personal{padding-top:78px;max-width:440px}
+.contact-stage-intro{font-size:14px;line-height:1.9;max-width:355px}
+.contact-stage-phones{margin-top:40px}
+.contact-stage-phones .eyebrow{font-size:9px;margin-bottom:12px}
+.contact-stage-phones a{display:flex;align-items:center;gap:32px;width:max-content;font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,2.7vw,46px);line-height:1.45}
+.contact-stage-phones a span{font-family:Manrope,sans-serif;font-size:22px;color:var(--olive-on-dark);transition:transform .3s}
+.contact-stage-phones a:hover span{transform:translate(3px,-3px)}
+.contact-stage-address{border-top:1px solid var(--line-on-dark);margin-top:25px;padding-top:22px;display:flex;gap:40px;align-items:start}
+.contact-stage-address .eyebrow{font-size:9px;padding-top:4px}.contact-stage-address address{font-size:12px}
+.inquiry-board{position:relative;background:var(--cream);color:var(--moss-deep);padding:32px 36px 26px;border-radius:3px;box-shadow:0 20px 55px #10201440;border-top:3px solid var(--olive-on-dark)}
+.inquiry-board-heading{display:flex;justify-content:space-between;align-items:center;padding-bottom:24px;margin-bottom:23px;border-bottom:1px solid var(--line-subtle)}
+.inquiry-board .eyebrow{color:var(--olive-brand);font-size:9px}.inquiry-board h3{font-family:'Barlow Condensed',sans-serif;font-size:37px;letter-spacing:-.02em;margin-top:8px}.board-mark{font-size:39px;color:var(--olive-brand)}
+.inquiry-board label{color:var(--olive-brand);font-size:11px}.inquiry-board input,.inquiry-board select,.inquiry-board textarea{padding:13px 0;border-bottom-color:var(--olive-line)}
+.inquiry-board textarea{min-height:79px}.inquiry-board form>label{margin-top:23px}.inquiry-board .form-pair{gap:24px}
+.inquiry-board :is(input,select,textarea):focus{outline:none;box-shadow:none;background:transparent}.inquiry-board :is(input,select,textarea):focus-visible{border-bottom-color:var(--green-accent)}
+.inquiry-board :is(input,textarea)[aria-invalid=true]{border-bottom-color:#9b3e2a}
+.inquiry-board .form-note{margin:18px 0;font-size:10px;max-width:370px}
+.inquiry-board .button{border-radius:4px;background:var(--olive-brand);min-height:51px}.inquiry-board .button>span{border-radius:2px;background:var(--olive-tint);color:var(--moss-deep);width:31px;height:31px}
+.inquiry-board .button:disabled{opacity:1;background:var(--stone-warm);color:var(--text-muted);box-shadow:none}.inquiry-board .button:disabled>span{background:transparent;color:var(--text-muted)}
+.contact-stage-signoff{display:flex;justify-content:space-between;border-top:1px solid var(--line-on-dark);margin-top:55px;padding:22px 0 28px;font-size:8px;letter-spacing:.14em;color:var(--olive-tint)}
+@media(prefers-reduced-motion:no-preference){.inquiry-board{animation:board-arrival linear both;animation-timeline:view();animation-range:entry 0% entry 80%}@keyframes board-arrival{from{transform:translateY(35px);opacity:.65}to{transform:none;opacity:1}}}
+/* The board follows the heading and address divider, not the section bounds. */
+.contact-stage-grid{position:relative;min-height:547.5px}
+.inquiry-board{position:absolute;right:0;top:var(--board-top,0px);width:calc((100% - clamp(70px,8vw,170px)) * .9 / 1.9);min-width:480px;height:var(--board-height,548px);padding:23px 36px 22px;display:flex;flex-direction:column}
+.inquiry-board-heading{padding-bottom:15px;margin-bottom:16px;flex-shrink:0}
+.inquiry-board form{flex:1;display:flex;flex-direction:column;min-height:0}
+.inquiry-board form>label{margin-top:16px}
+.inquiry-board input,.inquiry-board select,.inquiry-board textarea{padding:10px 0}
+.inquiry-board textarea{min-height:64px;height:64px;max-height:64px;resize:none}
+.inquiry-board .form-note{margin:14px 0}
+.inquiry-board .button{margin-top:auto;flex-shrink:0}
+.inquiry-board .form-status:empty{margin:0}

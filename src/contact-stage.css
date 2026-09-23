@@ -15,6 +15,7 @@
 .contact-stage-phones a{display:flex;align-items:center;gap:32px;width:max-content;font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,2.7vw,46px);line-height:1.45}
 .contact-stage-phones a span{font-family:Manrope,sans-serif;font-size:22px;color:var(--olive-on-dark);transition:transform .3s}
 .contact-stage-phones a:hover span{transform:translate(3px,-3px)}
+.contact-stage .contact-email-utility{margin-top:14px}.contact-stage .contact-email-utility>a{color:var(--cream)}.contact-stage .contact-email-utility button{color:var(--olive-tint)}
 .contact-stage-address{border-top:1px solid var(--line-on-dark);margin-top:25px;padding-top:22px;display:flex;gap:40px;align-items:start}
 .contact-stage-address .eyebrow{font-size:9px;padding-top:4px}.contact-stage-address address{font-size:12px}
 .inquiry-board{position:relative;background:var(--cream);color:var(--moss-deep);padding:32px 36px 26px;border-radius:3px;box-shadow:0 20px 55px #10201440;border-top:3px solid var(--olive-on-dark)}

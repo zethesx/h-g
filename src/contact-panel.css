@@ -14,6 +14,7 @@
 #contact-dialog .close-contact{min-height:32px;gap:9px;border-radius:3px;padding:0 5px;color:var(--olive-brand)}#contact-dialog .close-contact:hover{background:var(--stone-warm)}
 #contact-dialog h2{font-size:57px;margin:18px 0 9px}#contact-dialog .dialog-intro{font-size:12px;line-height:1.7}
 #contact-dialog .dialog-phones{margin:17px 0 20px;padding:13px 0;gap:10px;font-size:12px}#contact-dialog .dialog-phones a{padding:4px 0}
+#contact-dialog .contact-email-utility{justify-content:space-between;margin:-7px 0 15px;color:var(--olive-brand)}
 #contact-dialog .form-pair{gap:18px}#contact-dialog form>label{margin-top:15px}#contact-dialog textarea{min-height:65px}#contact-dialog .form-note{margin:13px 0}
 #contact-dialog [type=submit]{border-radius:4px;min-height:47px}#contact-dialog :focus-visible{outline:2px solid var(--olive-accent);outline-offset:4px}
 @keyframes ticket-panel-in{from{opacity:.4;clip-path:inset(calc(100% - 56px) 0 0 calc(100% - 174px) round 6px);transform:translateY(5px) scale(.98)}to{opacity:1;clip-path:inset(0 round 8px);transform:none}}

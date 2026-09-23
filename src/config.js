@@ -1,6 +1,6 @@
 export const contactConfig = Object.freeze({
-  // Set a same-origin production endpoint after server-side validation,
-  // rate limiting, recipient configuration and privacy information are ready.
-  endpoint: null,
+  endpoint: 'https://formspree.io/f/xljdnoyq',
+  email: 'Gasimovbabak@gmail.com',
+  subject: 'Neue Anfrage über hausmeister-undgartenservice.de',
   timeoutMs: 12000,
 });

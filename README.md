@@ -44,4 +44,4 @@ $env:VITE_BASE_PATH='/example/path/'; npm run build
 
 ## Contact form
 
-The online form remains disabled until a same-origin production endpoint and the responsible recipient are configured in `src/config.js`. The two telephone links remain available throughout the site.
+Both inquiry forms submit to the configured Formspree endpoint in `src/config.js`. No email or SMTP credentials are stored in the frontend.

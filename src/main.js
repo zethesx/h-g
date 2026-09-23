@@ -30,8 +30,9 @@ const serviceButtons = [...document.querySelectorAll('[data-service]')];
 const subject = $('#subject');
 serviceButtons.forEach((button) => {
   const option = document.createElement('option');
-  option.value = button.dataset.service;
-  option.textContent = button.childNodes[1].textContent.trim();
+  const label = button.childNodes[1].textContent.trim();
+  option.value = label;
+  option.textContent = label;
   subject.append(option);
 });
 let activeService = 0;
@@ -91,7 +92,7 @@ function closeContact() {
   closingTimer = setTimeout(() => dialog.close(), reducedMotion.matches ? 0 : 230);
 }
 document.querySelectorAll('[data-contact]').forEach((button) => button.addEventListener('click', openContact));
-$('[data-service-contact]').addEventListener('click', () => { subject.value = String(activeService); openContact(); });
+$('[data-service-contact]').addEventListener('click', () => { subject.value = serviceButtons[activeService].childNodes[1].textContent.trim(); openContact(); });
 $('.close-contact').addEventListener('click', closeContact);
 dialog.addEventListener('cancel', (event) => { event.preventDefault(); closeContact(); });
 dialog.addEventListener('keydown', (event) => {
@@ -116,48 +117,116 @@ dialog.addEventListener('close', () => {
 });
 function initInquiryForm(form, prefix = '') {
   const field = selector => form.querySelector('#' + prefix + selector.slice(1));
-  const subject = field('#subject');
-const submit = form.querySelector('[type=submit]');
-submit.disabled = !contactConfig.endpoint;
-if (contactConfig.endpoint) field('#form-note').textContent = 'Ihre Angaben verwenden wir zur Bearbeitung Ihrer Anfrage.';
-function validateForm() {
-  const errors = {
-    name: field('#name').value.trim() ? '' : 'Bitte geben Sie Ihren Namen ein.',
-    reply: /^(?:[^\s@]+@[^\s@]+\.[^\s@]+|[+()\d\s/.-]{6,})$/.test(field('#reply').value.trim()) ? '' : 'Bitte geben Sie eine gültige Telefonnummer oder E-Mail-Adresse ein.',
-    message: field('#message').value.trim().length >= 5 ? '' : 'Bitte beschreiben Sie Ihr Anliegen mit mindestens 5 Zeichen.',
-  };
-  for (const [id, message] of Object.entries(errors)) { field(`#error-${id}`).textContent = message; field(`#${id}`).setAttribute('aria-invalid', String(Boolean(message))); }
-  const first = Object.keys(errors).find((id) => errors[id]);
-  if (first) field(`#${first}`).focus();
-  return !first;
-}
-form.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  if (!contactConfig.endpoint) { field('#form-status').textContent = 'Bitte rufen Sie uns an. Die Online-Anfrage ist noch nicht freigeschaltet.'; return; }
-  if (!validateForm()) return;
-  const data = Object.fromEntries(new FormData(form));
-  if (data.website) return;
-  submit.disabled = true;
-  field('#form-status').textContent = 'Ihre Anfrage wird gesendet …';
-  try {
-    const endpoint = new URL(contactConfig.endpoint, location.origin);
-    if (endpoint.origin !== location.origin) throw new Error('Endpoint must be same-origin');
-    const response = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ ...data, subject: subject.selectedOptions[0].textContent }), signal: AbortSignal.timeout(contactConfig.timeoutMs) });
-    if (!response.ok) throw new Error('Submission failed');
-    const result = await response.json();
-    if (result.success !== true) throw new Error('Missing confirmation');
-    field('#form-status').textContent = 'Vielen Dank. Ihre Anfrage ist eingegangen.';
-    form.reset();
-  } catch { field('#form-status').textContent = 'Ihre Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder rufen Sie uns an.'; }
-  finally { submit.disabled = false; }
-});
-for (const id of ['name', 'reply', 'message']) field(`#${id}`).addEventListener('input', () => { field(`#error-${id}`).textContent = ''; field(`#${id}`).removeAttribute('aria-invalid'); });
+  const service = field('#subject');
+  const submit = form.querySelector('[type=submit]');
+  const status = field('#form-status');
+  const submitLabel = submit.firstChild.textContent.trim();
+  const setSubmitLabel = label => { submit.firstChild.textContent = `${label} `; };
 
+  function validateForm() {
+    const errors = {
+      name: field('#name').value.trim() ? '' : 'Bitte geben Sie Ihren Namen ein.',
+      reply: /^(?:[^\s@]+@[^\s@]+\.[^\s@]+|[+()\d\s/.-]{6,})$/.test(field('#reply').value.trim()) ? '' : 'Bitte geben Sie eine gültige Telefonnummer oder E-Mail-Adresse ein.',
+      message: field('#message').value.trim().length >= 5 ? '' : 'Bitte beschreiben Sie Ihr Anliegen mit mindestens 5 Zeichen.',
+    };
+    for (const [id, message] of Object.entries(errors)) {
+      field(`#error-${id}`).textContent = message;
+      field(`#${id}`).setAttribute('aria-invalid', String(Boolean(message)));
+    }
+    const first = Object.keys(errors).find(id => errors[id]);
+    if (first) field(`#${first}`).focus();
+    return !first;
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (form.dataset.submitting === 'true' || !validateForm()) return;
+
+    const formData = new FormData(form);
+    if (formData.get('_gotcha')) return;
+
+    const reply = field('#reply').value.trim();
+    formData.set('service', service.selectedOptions[0].textContent);
+    formData.set('_subject', contactConfig.subject);
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(reply)) formData.set('_replyto', reply);
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), contactConfig.timeoutMs);
+    form.dataset.submitting = 'true';
+    form.setAttribute('aria-busy', 'true');
+    submit.disabled = true;
+    setSubmitLabel('Wird gesendet …');
+    status.textContent = 'Wird gesendet …';
+
+    try {
+      const response = await fetch(contactConfig.endpoint, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: formData,
+        signal: controller.signal,
+      });
+      if (!response.ok) throw new Error('Submission failed');
+
+      form.reset();
+      for (const id of ['name', 'reply', 'message']) {
+        field(`#error-${id}`).textContent = '';
+        field(`#${id}`).removeAttribute('aria-invalid');
+      }
+      status.textContent = 'Vielen Dank. Ihre Anfrage wurde erfolgreich gesendet.';
+    } catch {
+      status.textContent = 'Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt per E-Mail oder Telefon.';
+    } finally {
+      clearTimeout(timeout);
+      delete form.dataset.submitting;
+      form.removeAttribute('aria-busy');
+      submit.disabled = false;
+      setSubmitLabel(submitLabel);
+    }
+  });
+
+  for (const id of ['name', 'reply', 'message']) {
+    field(`#${id}`).addEventListener('input', () => {
+      field(`#error-${id}`).textContent = '';
+      field(`#${id}`).removeAttribute('aria-invalid');
+    });
+  }
 }
 initInquiryForm(form);
 const stageForm = $('#stage-contact-form');
 $('#stage-subject').innerHTML = subject.innerHTML;
 initInquiryForm(stageForm, 'stage-');
+
+const copyTimers = new WeakMap();
+function fallbackCopy(value) {
+  const textarea = document.createElement('textarea');
+  textarea.value = value;
+  textarea.setAttribute('readonly', '');
+  textarea.style.cssText = 'position:fixed;inset:0 auto auto 0;opacity:0;pointer-events:none';
+  document.body.append(textarea);
+  textarea.select();
+  textarea.setSelectionRange(0, value.length);
+  const copied = document.execCommand('copy');
+  textarea.remove();
+  return copied;
+}
+document.querySelectorAll('[data-copy-email]').forEach((button) => {
+  button.addEventListener('click', async () => {
+    const label = button.querySelector('[data-copy-label]');
+    let copied = false;
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(contactConfig.email);
+        copied = true;
+      } else copied = fallbackCopy(contactConfig.email);
+    } catch {
+      copied = fallbackCopy(contactConfig.email);
+    }
+
+    label.textContent = copied ? 'E-Mail-Adresse kopiert' : 'Bitte E-Mail-Adresse manuell kopieren';
+    clearTimeout(copyTimers.get(button));
+    copyTimers.set(button, setTimeout(() => { label.textContent = 'E-Mail-Adresse kopieren'; }, 2600));
+  });
+});
 
 const story = $('.property-story');
 const footer = $('.footer');
